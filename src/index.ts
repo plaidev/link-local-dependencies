@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import linkLocalDeps from "./link-local-deps";
 
 function main() {
