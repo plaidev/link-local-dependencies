@@ -12,7 +12,8 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "test": "ts-mocha --ui tdd ./__tests__/*.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
