@@ -1,5 +1,5 @@
 {
-  "name": "link-local-dependencies",
+  "name": "@plaidev/link-local-dependencies",
   "version": "1.0.0",
   "main": "./src/index.ts",
   "repository": "git@github.com:plaidev/link-local-dependencies.git",
@@ -9,6 +9,9 @@
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "test": "ts-mocha --ui tdd ./__tests__/*.ts",
