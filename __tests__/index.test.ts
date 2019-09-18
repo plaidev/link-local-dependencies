@@ -3,58 +3,45 @@ import fs from "fs";
 import assert from "assert";
 import linkLocalDeps from "../src/link-local-deps";
 
+const projectPath = path.resolve(__dirname, "./test-project");
+const packageJsonPath = path.resolve(projectPath, "./package.json");
+const packageJson = {
+  localDependencies: {
+    packageA: "./packageA",
+    packageB: "./packages/packageB"
+  }
+};
+const packageAPath = path.resolve(
+  projectPath,
+  packageJson.localDependencies.packageA
+);
+const packageBpath = path.resolve(
+  projectPath,
+  packageJson.localDependencies.packageB
+);
+const entityInPackageAPath = path.resolve(packageAPath, "./entity");
+const entityInPackageBPath = path.resolve(packageBpath, "./entity");
+const nodeModulesPath = path.resolve(projectPath, "./node_modules");
+
 test("should work", () => {
-  const projectPath = path.resolve(__dirname, "./test-project");
-  const packageJsonPath = path.resolve(projectPath, "./package.json");
-  const packageJson = {
-    localDependencies: {
-      packageA: "./packageA",
-      packageB: "./packageB"
-    }
-  };
+  // setup project
   fs.mkdirSync(projectPath);
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson));
-  fs.mkdirSync(
-    path.resolve(projectPath, packageJson.localDependencies.packageA)
-  );
-  fs.mkdirSync(
-    path.resolve(projectPath, packageJson.localDependencies.packageB)
-  );
-  fs.writeFileSync(
-    path.resolve(
-      projectPath,
-      packageJson.localDependencies.packageA,
-      "./entity"
-    ),
-    "packageA"
-  );
-  fs.writeFileSync(
-    path.resolve(
-      projectPath,
-      packageJson.localDependencies.packageB,
-      "./entity"
-    ),
-    "packageB"
-  );
+  fs.mkdirSync(packageAPath);
+  fs.mkdirSync(packageBpath, { recursive: true });
+  fs.writeFileSync(entityInPackageAPath, "packageA");
+  fs.writeFileSync(entityInPackageBPath, "packageB");
 
   linkLocalDeps(projectPath);
 
   const entityInPackageA = fs.readFileSync(
-    path.resolve(
-      projectPath,
-      "./node_modules",
-      packageJson.localDependencies.packageA,
-      "./entity"
-    )
+    path.resolve(nodeModulesPath, "./packageA", "./entity")
   );
   const entityInPackageB = fs.readFileSync(
-    path.resolve(
-      projectPath,
-      "./node_modules",
-      packageJson.localDependencies.packageB,
-      "./entity"
-    )
+    path.resolve(nodeModulesPath, "./packageB", "./entity")
   );
+
+  // teardown project
   (fs as any).rmdirSync(projectPath, { recursive: true });
 
   assert(entityInPackageA.toString() === "packageA");
