@@ -15,6 +15,7 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "test": "ts-mocha --ui tdd ./__tests__/*.ts",
+    "prettier": "npx prettier --write ./__tests__/**/*.ts ./src/**/*.ts",
     "build": "tsc -p ./tsconfig.json",
     "prepublish": "npm run build"
   },
