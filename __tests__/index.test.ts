@@ -15,12 +15,12 @@ const packageAPath = path.resolve(
   projectPath,
   packageJson.localDependencies.packageA
 );
-const packageBpath = path.resolve(
+const packageBPath = path.resolve(
   projectPath,
   packageJson.localDependencies.packageB
 );
 const entityInPackageAPath = path.resolve(packageAPath, "./entity");
-const entityInPackageBPath = path.resolve(packageBpath, "./entity");
+const entityInPackageBPath = path.resolve(packageBPath, "./entity");
 const nodeModulesPath = path.resolve(projectPath, "./node_modules");
 
 test("should work", () => {
@@ -28,7 +28,7 @@ test("should work", () => {
   fs.mkdirSync(projectPath);
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson));
   fs.mkdirSync(packageAPath);
-  fs.mkdirSync(packageBpath, { recursive: true });
+  fs.mkdirSync(packageBPath, { recursive: true });
   fs.writeFileSync(entityInPackageAPath, "packageA");
   fs.writeFileSync(entityInPackageBPath, "packageB");
 
