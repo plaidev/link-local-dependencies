@@ -32,3 +32,8 @@ $ npx @plaidev/link-local-dependencies
 ## Before you use
 
 This package requires `node.js >= 10.12.0`, since we use fs.mkdir with recursive option.
+
+## Why
+
+We, dev members in plaid inc, are developping very big product which is written in nodejs with mono structured repository.
+To develop mono structured repository with nodejs, we have to orchestrate multiple packages. Luckily, there are some choice to handle it. Lerna is one of these, which is widely used in many mono structured project. We tried several useful utilities, lerna, yarn workspace, pnpm workspace, and npm link. These utilities, however, were not suited to our case. Lerna forces us to learn unnecessary usages, yarn hoisting breaks docker environment with too many filesytem use, pnpm breaks dependency solving, and npm link has fatal bugs! Eventually, we adopted an super simple solution - just linking -.
