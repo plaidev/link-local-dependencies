@@ -1,0 +1,32 @@
+name: publish
+env:
+  CI: true
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "!*"
+jobs:
+  release:
+    name: Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          registry-url: 'https://npm.pkg.github.com'
+      - name: install
+        run: yarn install
+      - name: build
+        run: yarn run build
+      - name: test
+        run: yarn test
+      - name: publish
+        run: |
+          npx can-npm-publish --verbose && npm publish --registry https://npm.pkg.github.com --access restricted || echo "Does not publish"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
