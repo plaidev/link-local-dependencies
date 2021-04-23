@@ -26,6 +26,10 @@ const entityInPackageAPath = path.resolve(packageAPath, "./entity");
 const entityInPackageBPath = path.resolve(packageBPath, "./entity");
 const nodeModulesPath = path.resolve(projectPath, "./node_modules");
 
+afterAll(() => {
+  fs.rmSync(projectPath, { recursive: true });
+});
+
 test("should work", () => {
   // setup project
   fs.mkdirSync(projectPath);
@@ -43,9 +47,6 @@ test("should work", () => {
   const entityInPackageB = fs.readFileSync(
     path.resolve(nodeModulesPath, "./packageB", "./entity")
   );
-
-  // teardown project
-  fs.rmSync(projectPath, { recursive: true });
 
   assert(entityInPackageA.toString() === "packageA");
   assert(entityInPackageB.toString() === "packageB");
