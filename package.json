@@ -1,6 +1,6 @@
 {
   "name": "@plaidev/link-local-dependencies",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "./src/index.ts",
   "repository": "git@github.com:plaidev/link-local-dependencies.git",
   "author": "RyosukeCla <ryosukeclarinet@gmail.com>",
