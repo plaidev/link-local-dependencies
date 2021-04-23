@@ -9,7 +9,8 @@ Just make relative symbolic links in local dependencies, not update, install or 
 
 {
   "scripts": {
-    "postinstall": "npx @plaidev/link-local-dependencies"
+    "postinstall": "npx @plaidev/link-local-dependencies",
+    "local:postinstall": "echo 'this script will be executed after linking local dependencies'"
   },
   "localDependencies": {
     "packageA": "./packages/packageA"
