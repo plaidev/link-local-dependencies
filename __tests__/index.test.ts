@@ -2,14 +2,16 @@ import path from "path";
 import fs from "fs";
 import assert from "assert";
 import linkLocalDeps from "../src/link-local-deps";
+import os from "os";
 
-const projectPath = path.resolve(__dirname, "./test-project");
+const projectPath = path.resolve(os.tmpdir(), "./test-project");
+
 const packageJsonPath = path.resolve(projectPath, "./package.json");
 const packageJson = {
   localDependencies: {
     packageA: "./packageA",
-    packageB: "./packages/packageB"
-  }
+    packageB: "./packages/packageB",
+  },
 };
 const packageAPath = path.resolve(
   projectPath,
@@ -19,9 +21,14 @@ const packageBPath = path.resolve(
   projectPath,
   packageJson.localDependencies.packageB
 );
+
 const entityInPackageAPath = path.resolve(packageAPath, "./entity");
 const entityInPackageBPath = path.resolve(packageBPath, "./entity");
 const nodeModulesPath = path.resolve(projectPath, "./node_modules");
+
+afterAll(() => {
+  fs.rmSync(projectPath, { recursive: true });
+});
 
 test("should work", () => {
   // setup project
@@ -40,9 +47,6 @@ test("should work", () => {
   const entityInPackageB = fs.readFileSync(
     path.resolve(nodeModulesPath, "./packageB", "./entity")
   );
-
-  // teardown project
-  (fs as any).rmdirSync(projectPath, { recursive: true });
 
   assert(entityInPackageA.toString() === "packageA");
   assert(entityInPackageB.toString() === "packageB");
