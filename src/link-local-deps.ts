@@ -7,13 +7,13 @@ interface PackageJson {
   };
 }
 
-export default function(projectPath: string) {
+export default function (projectPath: string) {
   const packageJsonPath = path.join(projectPath, "./package.json");
   const nodeModulesPath = path.resolve(projectPath, "./node_modules");
 
-  const packageJsonBuffer = fs.readFileSync(packageJsonPath);
-  const packageJson: PackageJson = JSON.parse(packageJsonBuffer.toString());
-  const { localDependencies } = packageJson;
+  const pkgStr = fs.readFileSync(packageJsonPath, "utf-8");
+  const { localDependencies } = JSON.parse(pkgStr) as PackageJson;
+
   if (!localDependencies) {
     console.log("no local dependencies");
     return;
@@ -26,10 +26,17 @@ export default function(projectPath: string) {
       path.resolve(projectPath, localDependencies[name])
     );
     fs.mkdirSync(path.dirname(distPath), { recursive: true });
+
     try {
       fs.unlinkSync(distPath);
     } catch (e) {}
     fs.symlinkSync(srcPath, distPath);
-    console.log("symlink", distPath, "->", srcPath);
+
+    console.log(
+      "[@plaidev/link-local-dependencies] symlink",
+      distPath.replace(projectPath + "/", ""),
+      "->",
+      srcPath
+    );
   }
 }
